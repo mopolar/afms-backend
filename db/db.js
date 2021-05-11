@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const url = process.env.DATABASE_URL
+const url = 'mongodb+srv://polar:polar@cluster0.qm8mc.mongodb.net/AFMS?retryWrites=true&w=majority'
 
 let mong = mongoose.connect(url, {
     useNewUrlParser: true,
