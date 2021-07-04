@@ -6,6 +6,7 @@ const header_middleware = require("./middlewares/header")
 
 const userRoutes = require("./Routes/user");
 const tableRoutes = require("./Routes/table");
+const deviceRoutes = require("./Routes/device");
 
 
 
@@ -23,6 +24,7 @@ app.use("/images", express.static(directory));
 
 app.use("/api/user", userRoutes);
 app.use("/api/table",tableRoutes);
+app.use("/api/device",deviceRoutes);
 
 
 app.get('/test', (req, res) => {

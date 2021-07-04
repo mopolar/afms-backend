@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('../models/user')
+const Device = require('../models/device')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -10,33 +11,42 @@ router.post("/signup", (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(hash => {
       const user = new User({
         email: req.body.email,
-        password: hash
+        password: hash,
+        device_number: req.body.device_number
       });
+      console.log(user)
+      console.log(Device.findOne({device_number: req.body.device_number}))
+      Device.findOne({device_number: req.body.device_number}).then(device1=>{
+        if(device1){
+          User.findOne({email:req.body.email}).then(user1=>{
+            if(user1){
+              return res.status(401).json({
+                message: "User Already Exist"
+              })
+            }
 
-      User.findOne({email:req.body.email}).then(user1=>{
-        if(user1){
+            user.save().then(result => {
+              if(!result){
+                return res.status(500).json({
+                  message: "Error Creating USer"
+                })
+              }
+              res.status(201).json({
+                message: "User created!",
+                result: result
+              });
+            })
+          })  
+        } else{
           return res.status(401).json({
-            message: "User Already Exist"
+            message: "Device Number NOT Existed"
           })
         }
-
-        user.save().then(result => {
-          if(!result){
-            return res.status(500).json({
-              message: "Error Creating USer"
-            })
-          }
-          res.status(201).json({
-            message: "User created!",
-            result: result
-          });
-      })
-        })   
-      .catch(err => {
+      }).catch(err => {
         res.status(500).json({
           error: err
         });
-      });;
+      });
     })
    
   });
