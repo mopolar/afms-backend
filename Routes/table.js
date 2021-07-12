@@ -55,8 +55,8 @@ router.get('/:id', function(req, res, next) {
     })
 });
 
-router.get('/get/:device_number', function(req, res, next) {
-    Table.find({ device_number: req.params.device_number }, (err, res2)=>{
+router.get('/get/:email', function(req, res, next) {
+    Table.find({ email: req.params.email }, (err, res2)=>{
         if(err){
             res.send(err);
         }
